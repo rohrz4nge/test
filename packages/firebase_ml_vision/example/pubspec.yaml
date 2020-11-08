@@ -1,7 +1,7 @@
-name: firebase_ml_vision_example
-description: Demonstrates how to use the firebase_ml_vision plugin.
-author: Flutter Team <flutter-dev@googlegroups.com>
-version: 0.1.1
+name: HistamineScanner
+description: Highlights ingredients containing histamine in photos.
+author: Maximilian Lohmann
+version: 0.1.1+1
 
 dependencies:
   flutter:
@@ -15,7 +15,7 @@ dependencies:
   file_picker:
   image:
   path_provider: ^1.6.11
-
+  camerawesome: ^0.1.1+1
   http: ^0.12.2
 
 
