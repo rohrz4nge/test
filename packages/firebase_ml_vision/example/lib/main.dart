@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:io';
 
-import 'package:camerawesome/models/orientations.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:image_picker/image_picker.dart';
+//import 'package:image_picker/image_picker.dart';
 import 'painter.dart';
 import 'package:image/image.dart' as test;
 
@@ -14,7 +12,6 @@ import 'package:image/image.dart' as test;
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
-import "package:convert/convert.dart";
 
 class CameraExampleHome extends StatefulWidget {
   @override
@@ -43,7 +40,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
     WidgetsBinding.instance.addObserver(this);
     update_db();
 
-    _switchFlash = ValueNotifier(CameraFlashes.NONE);
+    _switchFlash = ValueNotifier(CameraFlashes.AUTO);
     zoomNotifier = ValueNotifier(0);
 
     sensor = ValueNotifier(Sensors.BACK);
@@ -234,18 +231,18 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
                   icon: Icon(_getFlashIcon()),
                   onPressed: () async {
                     switch (_switchFlash.value) {
-                      case CameraFlashes.NONE:
+                      case CameraFlashes.AUTO:
                         _switchFlash.value = CameraFlashes.ON;
                         break;
                       case CameraFlashes.ON:
-                        _switchFlash.value = CameraFlashes.AUTO;
+                        _switchFlash.value = CameraFlashes.NONE;
                         break;
-                      case CameraFlashes.AUTO:
+                      /*case CameraFlashes.AUTO:
                         _switchFlash.value = CameraFlashes.ALWAYS;
                         break;
                       case CameraFlashes.ALWAYS:
                         _switchFlash.value = CameraFlashes.NONE;
-                        break;
+                        break;*/
                     }
                     setState(() {});
                   },
@@ -346,6 +343,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
   }
 
   void onTakePictureButtonPressed() async {
+    //await CamerawesomePlugin.focus();
     String filePath = await takePicture();
     if (mounted) {
       setState(() {

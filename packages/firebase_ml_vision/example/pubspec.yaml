@@ -1,7 +1,7 @@
 name: HistamineScanner
 description: Highlights ingredients containing histamine in photos.
 author: Maximilian Lohmann
-version: 0.1.1+1
+version: 0.1.2
 
 dependencies:
   flutter:
