@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+
 //import 'package:image_picker/image_picker.dart';
 import 'painter.dart';
 import 'package:image/image.dart' as test;
@@ -53,14 +54,13 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-      _switchFlash.dispose();
-      _photoSize.dispose();
-      sensor.dispose();
-      zoomNotifier.dispose();
-      print("disposing");
-      super.dispose();
+    _switchFlash.dispose();
+    _photoSize.dispose();
+    sensor.dispose();
+    zoomNotifier.dispose();
+    print("disposing");
+    super.dispose();
   }
-
 
   @override
   void didChangeDependencies() {
@@ -257,9 +257,7 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
         width: 65.0,
         child: FittedBox(
           child: FloatingActionButton(
-              onPressed: controller != null
-                  ? onTakePictureButtonPressed
-                  : null,
+              onPressed: controller != null ? onTakePictureButtonPressed : null,
               child: Icon(Icons.camera),
               backgroundColor: Colors.blue
               // ...FloatingActionButton properties...
@@ -292,20 +290,20 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
   Widget _cameraPreviewWidget() {
     return GestureDetector(
       onScaleStart: (ScaleStartDetails details) {
-      //print(details);
-      // Does this need to go into setState, too?
-      // We are only saving the scale from before the zooming started
-      // for later - this does not affect the rendering...
-      _previousScale = zoomNotifier.value + 1;
-    },
-    onScaleUpdate: (ScaleUpdateDetails details) {
-    //print(details.scale);
-      double result = _previousScale * (details.scale) - 1;
-    if (result < 1 && result > 0) {
-      zoomNotifier.value = result;
-    }
-    setState(() {});
-    },
+        //print(details);
+        // Does this need to go into setState, too?
+        // We are only saving the scale from before the zooming started
+        // for later - this does not affect the rendering...
+        _previousScale = zoomNotifier.value + 1;
+      },
+      onScaleUpdate: (ScaleUpdateDetails details) {
+        //print(details.scale);
+        double result = _previousScale * (details.scale) - 1;
+        if (result < 1 && result > 0) {
+          zoomNotifier.value = result;
+        }
+        setState(() {});
+      },
       child: CameraAwesome(
         testMode: false,
         onPermissionsResult: (bool result) {},
@@ -313,7 +311,9 @@ class _CameraExampleHomeState extends State<CameraExampleHome>
           if (availableSizes.length == 1) return availableSizes[0];
           return availableSizes[1];
         },
-        onCameraStarted: () {print("started");},
+        onCameraStarted: () {
+          print("started");
+        },
         zoom: zoomNotifier,
         sensor: sensor,
         photoSize: _photoSize,
@@ -398,10 +398,10 @@ class CameraApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: CameraExampleHome(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
-
 
 Future<void> main() async {
   // Fetch the available cameras before initializing the app.
