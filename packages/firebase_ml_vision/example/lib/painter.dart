@@ -9,7 +9,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:path_provider/path_provider.dart';
 
-
 class PicturePainter extends StatefulWidget {
   final File imageFile;
 
@@ -42,10 +41,11 @@ class _PicturePainterState extends State<PicturePainter> {
   Future<dynamic> _scanImage() async {
     final FirebaseVisionImage visionImage =
         await FirebaseVisionImage.fromFile(widget.imageFile);
-    final TextRecognizer textRecognizer = FirebaseVision.instance.textRecognizer();
+    final TextRecognizer textRecognizer =
+        FirebaseVision.instance.textRecognizer();
 
-
-    final VisionText visionText = await textRecognizer.processImage(visionImage);
+    final VisionText visionText =
+        await textRecognizer.processImage(visionImage);
     return visionText;
   }
 
@@ -72,11 +72,11 @@ class _PicturePainterState extends State<PicturePainter> {
   Future<Map<String, dynamic>> loadJSON() async {
     String cached_db_path = await get_local_filename("sortedIngredients.json");
     String path = 'assets/sortedIngredients.json';
-    if (FileSystemEntity.typeSync(cached_db_path) != FileSystemEntityType.notFound) {
+    if (FileSystemEntity.typeSync(cached_db_path) !=
+        FileSystemEntityType.notFound) {
       path = cached_db_path;
     }
-    final loaded_data =
-        await rootBundle.loadString(path);
+    final loaded_data = await rootBundle.loadString(path);
     final Map<String, dynamic> ingredients =
         (await json.decode(loaded_data)); //["ingredients"];
     Map<String, dynamic> ingredient_map = {};
@@ -104,25 +104,29 @@ class _PicturePainterState extends State<PicturePainter> {
       future: Future.wait([_getImageSize(), _scanImage(), loadJSON()]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return Container(
-            color: Colors.black,
-            child: Center(
-              child: AspectRatio(
-                aspectRatio: snapshot.data[0].aspectRatio,
-                child: Container(
-                  constraints: const BoxConstraints.expand(),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: Image.file(widget.imageFile).image,
-                      fit: BoxFit.fill,
+          return InteractiveViewer(
+              boundaryMargin: EdgeInsets.all(0.0),
+              minScale: 1,
+              maxScale: 5,
+              child: Container(
+                color: Colors.black,
+                child: Center(
+                  child: AspectRatio(
+                    aspectRatio: snapshot.data[0].aspectRatio,
+                    child: Container(
+                      constraints: const BoxConstraints.expand(),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: Image.file(widget.imageFile).image,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      child: _buildResults(
+                          snapshot.data[0], snapshot.data[1], snapshot.data[2]),
                     ),
                   ),
-                  child: _buildResults(
-                      snapshot.data[0], snapshot.data[1], snapshot.data[2]),
                 ),
-              ),
-            ),
-          );
+              ));
         } else {
           return Container(
             constraints: const BoxConstraints.expand(),
@@ -204,18 +208,17 @@ class _PicturePainterState extends State<PicturePainter> {
         shape: new CircularNotchedRectangle(),
         child: Container(
           height: 75,
-          padding: const EdgeInsets.fromLTRB(10.0,0,10,0),
+          padding: const EdgeInsets.fromLTRB(10.0, 0, 10, 0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: Icon(Icons.chevron_left),
+                  icon: Icon(Icons.chevron_left),
                   iconSize: 30,
                   onPressed: () {
                     Navigator.pop(context);
-                  }
-              )
+                  })
             ],
           ),
         ),
